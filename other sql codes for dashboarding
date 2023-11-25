@@ -54,7 +54,7 @@ ride_count,
 -COALESCE(ROUND(((LAG(ride_count, 1) OVER(ORDER BY ride_count DESC)-ride_count)::numeric/LAG(ride_count, 1) OVER(ORDER BY ride_count DESC)::numeric)*100, 2),0) AS drop_pct
 FROM funnel;
 
-#-----------------calculates the steps for the funnel char----------------------------------t#
+#-----------------calculates the steps for the funnel chart----------------------------------t#
 
 WITH downloads AS (
   SELECT
@@ -248,7 +248,7 @@ GROUP BY
 ORDER BY
     request_hour, age_range, platform, day_type;
 
-#-------sorting funnel by age and converstion
+#-------sorting funnel by age and converstion rate------#
 WITH funnel_agg AS (
    SELECT
        s.age_range,
@@ -336,5 +336,30 @@ SELECT *,
 FROM pivot_data
 ORDER BY age_range, funnel_step;
 
+
+
+#----------cancellation time frame and ride count----#
+
+SELECT signups.age_range, r.cancel_ts - r.request_ts AS cancellation_timeframe, COUNT(cancel_ts)
+FROM ride_requests r
+LEFT JOIN signups USING (user_id)
+GROUP BY 2, signups.age_range
+ORDER BY 1;
+
+
+#---------platform and total downloads#--------
+SELECT
+    platform,
+    downloads,
+    SUM(downloads) OVER () AS total_downloads,
+    downloads::float /
+        SUM(downloads) OVER () AS pct_of_downloads
+FROM (
+    SELECT
+        platform,
+        COUNT(*) AS downloads
+    FROM app_downloads
+    GROUP BY platform
+) result;
 
 
