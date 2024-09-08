@@ -3,12 +3,12 @@ Funnel analysis
 
 There are a growing number of transport services around the globe. As an industry of ridesharing service, Metrocar believes it is a good choice for users to discover the app easily, book and pay for their services without any concerns . Metrocar has released a public dataset which can be found on Beekeeper studio which contain data 
 of 
- App downloads
- sign ups
- Ride requested
-Driver_accepted
-Ride_completed
-payment_info
+ App downloads,
+ sign ups,
+ Ride requested,
+Driver_accepted,
+Ride_completed,
+payment_info.
 Review.
 
 
